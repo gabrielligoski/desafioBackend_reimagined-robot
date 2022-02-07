@@ -2,6 +2,8 @@ package com.example.desafiobackend.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +49,12 @@ public class UserResource {
     @PostMapping("/user")
     public ResponseEntity<User> createUser(@RequestBody User user) throws URISyntaxException {
         System.out.print("REST request to create user");
-        var result = userRepository.save(user);
+
+        User newUser = new User();
+        newUser.setNickname(user.getNickname());
+        newUser.setRegistration_date(new Timestamp(new Date().getTime()));
+
+        var result = userRepository.save(newUser);
 
         return ResponseEntity.created(new URI("/api/user/" + result.getId()))
                 .body(result);
