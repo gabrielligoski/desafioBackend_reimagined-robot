@@ -61,18 +61,18 @@ public class UserResource {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user) throws URISyntaxException {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) throws URISyntaxException {
         System.out.print("REST request to update a user");
-        var result = userRepository.save(user);
-        if (result.getId() == null)
+
+        if (user.getId() == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        if (userRepository.findById(user.getId()).isEmpty())
+        if (userRepository.findById(id).isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        userRepository.findById(user.getId()).map(u -> {
-            u.setNickname(user.getNickname());
-            return null;
-        });
-        return ResponseEntity.created(new URI("/api/user/" + result.getId()))
+        User result = userRepository.findById(id).get();
+        result.setNickname(user.getNickname());
+        userRepository.save(result);
+
+        return ResponseEntity.created(new URI("/api/user/" + id))
                 .body(result);
     }
 

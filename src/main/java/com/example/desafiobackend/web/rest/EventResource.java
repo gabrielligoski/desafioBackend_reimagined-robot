@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.desafiobackend.model.Event;
-import com.example.desafiobackend.model.User;
+import com.example.desafiobackend.model.Event;
 import com.example.desafiobackend.repository.EventRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,8 +52,8 @@ public class EventResource {
         System.out.print("REST request to create event");
 
         Event newEvent = new Event();
-        newEvent.setEventType(event.getEventType());
         newEvent.setEventDate(new Timestamp(new Date().getTime()));
+        newEvent.setEventType(event.getEventType());
 
         var result = eventRepository.save(newEvent);
 
@@ -62,18 +62,19 @@ public class EventResource {
     }
 
     @PutMapping("/event/{id}")
-    public ResponseEntity<Event> updateEvent(@RequestBody Event event) throws URISyntaxException {
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) throws URISyntaxException {
         System.out.print("REST request to update a event");
-        var result = eventRepository.save(event);
-        if (result.getId() == null)
+
+        if (event.getId() == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        if (eventRepository.findById(event.getId()).isEmpty())
+        if (eventRepository.findById(id).isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        eventRepository.findById(event.getId()).map(e -> {
-            e.setEventType(event.getEventType());
-            return null;
-        });
-        return ResponseEntity.created(new URI("/api/event/" + result.getId()))
+        Event result = eventRepository.findById(id).get();
+        result.setEventDate(event.getEventDate());
+        result.setEventType(event.getEventType());
+        eventRepository.save(result);
+
+        return ResponseEntity.created(new URI("/api/event/" + id))
                 .body(result);
     }
 
