@@ -3,7 +3,7 @@ package com.example.desafiobackend;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import com.example.desafiobackend.model.User;
+import com.example.desafiobackend.model.Event;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class DesafiobackendApplicationTests {
+public class EventsTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,39 +36,40 @@ class DesafiobackendApplicationTests {
     }
 
     @Test
-    public void getUser() throws Exception {
-        this.mockMvc.perform(get("/api/user/1")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":1,\"nickname\":\"Gabe\",\"registration_date\":\"2022-02-08T19:22:26.000+00:00\"}"));
+    public void getEvent() throws Exception {
+        this.mockMvc.perform(get("/api/event/1")).andDo(print()).andExpect(status().is2xxSuccessful())
+                .andExpect(content().string("{\"id\":1,\"eventType\":\"type_A_event\",\"eventDate\":\"2022-02-07T23:08:44.000+00:00\"}"));
     }
 
     @Test
-    public void postUser() throws Exception {
-        this.mockMvc.perform(post("/api/user")
+    public void postEvent() throws Exception {
+        this.mockMvc.perform(post("/api/event")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new User(0L, "new User", new Timestamp(new Date().getTime())))))
+                        .content(asJsonString(new Event(0L, "new Event", new Timestamp(new Date().getTime())))))
                 .andDo(print()).andExpect(status().is2xxSuccessful())
-                .andExpect(content().string("Úsuario criado com sucesso!"));
+                .andExpect(content().string("Evento criado com sucesso!"));
     }
 
     @Test
-    public void putUser() throws Exception {
-        this.mockMvc.perform(put("/api/user/3")
+    public void putEvent() throws Exception {
+        this.mockMvc.perform(put("/api/event/2")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new User(0L, "new User", new Timestamp(new Date().getTime())))))
+                        .content(asJsonString(new Event(0L, "new Event", new Timestamp(new Date().getTime())))))
                 .andDo(print()).andExpect(status().is2xxSuccessful())
-                .andExpect(content().string("Úsuario atualizado com sucesso!"));
+                .andExpect(content().string("Evento atualizado com sucesso!"));
     }
 
     @Test
-    public void getAllUsers() throws Exception {
-        this.mockMvc.perform(get("/api/users"))
+    public void getAllEvents() throws Exception {
+        this.mockMvc.perform(get("/api/events"))
                 .andDo(print()).andExpect(status().isOk());
     }
 
     @Test
-    public void deleteUser() throws Exception {
-        this.mockMvc.perform(delete("/api/user/3"))
+    public void deleteEvent() throws Exception {
+        this.mockMvc.perform(delete("/api/event/3"))
                 .andDo(print()).andExpect(status().is2xxSuccessful())
-                .andExpect(content().string("Úsuario deletado com sucesso!"));
+                .andExpect(content().string("Evento deletado com sucesso!"));
     }
+
 }

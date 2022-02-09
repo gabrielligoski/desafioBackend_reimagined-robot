@@ -48,7 +48,7 @@ public class EventResource {
     }
 
     @PostMapping("/event")
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) throws URISyntaxException {
+    public ResponseEntity<String> createEvent(@RequestBody Event event) throws URISyntaxException {
         System.out.print("REST request to create event");
 
         Event newEvent = new Event();
@@ -58,11 +58,11 @@ public class EventResource {
         var result = eventRepository.save(newEvent);
 
         return ResponseEntity.created(new URI("/api/event/" + result.getId()))
-                .body(result);
+                .body("Evento criado com sucesso!");
     }
 
     @PutMapping("/event/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) throws URISyntaxException {
+    public ResponseEntity<String> updateEvent(@PathVariable Long id, @RequestBody Event event) throws URISyntaxException {
         System.out.print("REST request to update a event");
 
         if (event.getId() == null)
@@ -75,13 +75,13 @@ public class EventResource {
         eventRepository.save(result);
 
         return ResponseEntity.created(new URI("/api/event/" + id))
-                .body(result);
+                .body("Evento atualizado com sucesso!");
     }
 
     @DeleteMapping("/event/{id}")
-    public ResponseEntity<Object> deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
         System.out.print("REST request to delete a event");
         eventRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("Evento deletado com sucesso!");
     }
 }

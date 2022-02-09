@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class DesafiobackendApplicationTests {
+public class UserTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -71,4 +71,5 @@ class DesafiobackendApplicationTests {
                 .andDo(print()).andExpect(status().is2xxSuccessful())
                 .andExpect(content().string("Úsuario deletado com sucesso!"));
     }
+
 }

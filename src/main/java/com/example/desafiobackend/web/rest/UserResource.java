@@ -47,7 +47,7 @@ public class UserResource {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<User> createUser(@RequestBody User user) throws URISyntaxException {
+    public ResponseEntity<String> createUser(@RequestBody User user) throws URISyntaxException {
         System.out.print("REST request to create user");
 
         User newUser = new User();
@@ -57,11 +57,11 @@ public class UserResource {
         var result = userRepository.save(newUser);
 
         return ResponseEntity.created(new URI("/api/user/" + result.getId()))
-                .body(result);
+                .body("Úsuario criado com sucesso!");
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) throws URISyntaxException {
+    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User user) throws URISyntaxException {
         System.out.print("REST request to update a user");
 
         if (user.getId() == null)
@@ -73,13 +73,13 @@ public class UserResource {
         userRepository.save(result);
 
         return ResponseEntity.created(new URI("/api/user/" + id))
-                .body(result);
+                .body("Úsuario atualizado com sucesso!");
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<Object> deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         System.out.print("REST request to delete a user");
         userRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("Úsuario deletado com sucesso!");
     }
 }
