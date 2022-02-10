@@ -11,7 +11,6 @@ services:
     networks:
       - spring-cloud-network
     volumes:
-      - db:/var/lib/mysql
       - /mysqldocker/schema-mysql.sql:/docker-entrypoint-initdb.d/schema-mysql.sql
       - db:/var/lib/mysql
 volumes:
