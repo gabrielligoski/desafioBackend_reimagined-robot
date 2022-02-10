@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  mysqldb:
+    image: mysql:8.0.26
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_DATABASE=backend_challenge
+    ports:
+      - 3306:3306
+    networks:
+      - spring-cloud-network
+    volumes:
+      - /mysqldocker/schema-mysql.sql:/docker-entrypoint-initdb.d/schema-mysql.sql
+
+volumes:
+  db:
+networks:
+  spring-cloud-network:
+    driver: bridge
