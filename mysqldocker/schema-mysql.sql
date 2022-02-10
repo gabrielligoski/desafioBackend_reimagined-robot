@@ -27,10 +27,3 @@ VALUES ('type_A_event'),
        ('type_C_event'),
        ('type_D_event'),
        ('type_E_event');
-
-# select *
-# from users;
-#
-# select *
-# from events;
-# SELECT VERSION();
